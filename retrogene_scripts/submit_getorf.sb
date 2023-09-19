@@ -1,0 +1,36 @@
+#!/bin/bash
+# The interpreter used to execute the script
+# “#SBATCH” directives that convey submission options:
+#SBATCH --mail-user=antnguye@umich.edu
+#SBATCH --mail-type=FAIL,ARRAY_TASKS
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --mem-per-cpu=6G 
+#SBATCH --time=12:00:00
+#SBATCH --account=jmkidd99
+#SBATCH --partition=standard
+#SBATCH --output=logs/%x-%A_%a.out.log
+#SBATCH --export=ALL
+#SBATCH --array=1-200
+
+run-by-cmd-number-modulus.py --cmds mischka.getorf_rc_cmds.txt --log logs/mischka_rc_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+run-by-cmd-number-modulus.py --cmds mCanLor1.2.getorf_rc_cmds.txt --log logs/mCanLor1.2_rc_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+run-by-cmd-number-modulus.py --cmds china.getorf_rc_cmds.txt --log logs/china_rc_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+run-by-cmd-number-modulus.py --cmds nala.getorf_rc_cmds.txt --log logs/nala_rc_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+run-by-cmd-number-modulus.py --cmds tasha.getorf_rc_cmds.txt --log logs/tasha_rc_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+run-by-cmd-number-modulus.py --cmds wags.getorf_rc_cmds.txt --log logs/wags_rc_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+run-by-cmd-number-modulus.py --cmds yella.getorf_rc_cmds.txt --log logs/yella_rc_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+run-by-cmd-number-modulus.py --cmds zoey.getorf_rc_cmds.txt --log logs/zoey_rc_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+
+run-by-cmd-number-modulus.py --cmds sandy.getorf_rc_cmds.txt --log logs/sandy_rc_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+run-by-cmd-number-modulus.py --cmds sandy.getorf_gene_cmds.txt --log logs/sandy_gene_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+run-by-cmd-number-modulus.py --cmds mischka.getorf_gene_cmds.txt --log logs/mischka_gene_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+run-by-cmd-number-modulus.py --cmds mCanLor1.2.getorf_gene_cmds.txt --log logs/mCanLor1.2_gene_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+run-by-cmd-number-modulus.py --cmds china.getorf_gene_cmds.txt --log logs/china_gene_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+run-by-cmd-number-modulus.py --cmds nala.getorf_gene_cmds.txt --log logs/nala_gene_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+run-by-cmd-number-modulus.py --cmds tasha.getorf_gene_cmds.txt --log logs/tasha_gene_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+run-by-cmd-number-modulus.py --cmds wags.getorf_gene_cmds.txt --log logs/wags_gene_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+run-by-cmd-number-modulus.py --cmds yella.getorf_gene_cmds.txt --log logs/yella_gene_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+run-by-cmd-number-modulus.py --cmds zoey.getorf_gene_cmds.txt --log logs/zoey_gene_getorf.log --mod 200 --worker $SLURM_ARRAY_TASK_ID
+

@@ -1,0 +1,47 @@
+#!/bin/bash
+#SBATCH --cpus-per-task=8
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --mem-per-cpu=16G
+#SBATCH --time=00:10:00
+#SBATCH --mail-user=antnguye@umich.edu
+#SBATCH --account=jmkidd99
+#SBATCH --output=logs/%x-%A_%a.out.log
+
+
+cd mischka_cDNA/
+faSplit sequence mischka_all_cDNA.fa 600 mischka_cDNA_
+cd ..
+
+cd mCanLor1.2_cDNA/
+faSplit sequence mCanLor1.2_all_cDNA.fa 600 mcanlor_cDNA_
+cd ..
+
+cd china_cDNA/
+faSplit sequence china_all_cDNA.fa 600 china_cDNA_
+cd ..
+
+cd tasha_cDNA/
+faSplit sequence tasha_all_cDNA.fa 600 tasha_cDNA_
+cd ..
+
+cd wags_cDNA/
+faSplit sequence wags_all_cDNA.fa 600 wags_cDNA_
+cd ..
+
+cd zoey_cDNA/
+faSplit sequence zoey_all_cDNA.fa 600 zoey_cDNA_
+cd ..
+
+cd nala_cDNA/
+faSplit sequence nala_all_cDNA.fa 600 nala_cDNA_
+cd ..
+
+cd sandy_cDNA/
+faSplit sequence sandy_all_cDNA.fa 600 sandy_cDNA_
+cd ..
+
+cd yella_cDNA/
+faSplit sequence yella_all_cDNA.fa 600 yella_cDNA_
+cd ..
+

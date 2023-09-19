@@ -1,0 +1,44 @@
+#!/bin/bash
+#SBATCH --job-name=tasha_fastCN_self_assembly
+#SBATCH --mail-user=antnguye@umich.edu
+#SBATCH --mail-type=FAIL,ARRAY_TASKS
+#SBATCH --nodes=1
+#SBATCH --exclude=gl3026,gl3042,gl3143,gl3044
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --ntasks-per-node=1
+#SBATCH --mem-per-cpu=6G
+#SBATCH --time=96:00:00
+#SBATCH --account=jmkidd1
+#SBATCH --partition=standard
+#SBATCH --output=logs/%x-%A_%a.out.log
+#SBATCH --export=ALL
+
+sample="tasha_self"
+reffile="Dog10K_Boxer_Tasha_1.0.KP081776.1"
+dogcram="BOXRSAMN02953603"
+
+python /home/jmkidd/links/kidd-lab/pkg/fastCN/fastCN/extract-from-bam-36.py \
+--in  /home/jmkidd/links/kidd-lab-locker/jmkidd/dogs/public-dogs/crams/$dogcram.cram \
+--reference /home/jmkidd/links/kidd-lab/genomes/UU_Cfam_GSD_1.0/ref-Y/UU_Cfam_GSD_1.0_ROSY.fa | \
+mrsfast --search /home/jmkidd/links/kidd-lab/genomes/$reffile/make-mrsfast-masked/RMandTRFandDustandK50-masked/$reffile.fa \
+--seq /dev/fd/0 --disable-nohits --mem 16 --threads 8 -e 2 --outcomp -o mapping/$sample
+
+zcat mapping/$sample.sam.gz | /home/jmkidd/links/kidd-lab/pkg/fastCN/fastCN/SAM_GC_correction \
+/home/jmkidd/links/kidd-lab/genomes/$reffile/make-mrsfast-masked/ref/$reffile.fa.fai \
+/home/jmkidd/links/kidd-lab/genomes/$reffile/make-mrsfast-masked/ref/genome_GC.bin \
+/dev/fd/0 \
+binary/$sample
+
+gzip binary/$sample.bin
+
+python /home/jmkidd/links/kidd-lab/pkg/fastCN/fastCN/perbp-to-windows.py \
+--depth binary/$sample.bin.gz \
+--out windows/$sample.depth.1kb.bed \
+--chromlen /home/jmkidd/links/kidd-lab/genomes/$reffile/make-mrsfast-masked/ref/$reffile.fa.fai \
+--windows /home/jmkidd/links/kidd-lab/genomes/$reffile/make-mrsfast-masked/make-windows/$reffile.1kb.bed 
+
+python /home/jmkidd/links/kidd-lab/pkg/fastCN/fastCN/depth-to-cn.py \
+--in windows/$sample.depth.1kb.bed \
+--autocontrol /nfs/turbo/jmkidddata/genomes/$reffile/make-mrsfast-masked/make-windows/$reffile.1kb.bed.control.autosomes \
+--chrX /nfs/turbo/jmkidddata/genomes/$reffile/make-mrsfast-masked/make-windows/$reffile.1kb.bed.control.chrX 
